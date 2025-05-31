@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-ui
+  namespace: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry-ui
+  template:
+    metadata:
+      labels:
+        app: registry-ui
+    spec:
+      containers:
+        - name: registry-ui
+          image: joxit/docker-registry-ui:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: REGISTRY_URL
+              value: ""
+            - name: NGINX_PROXY_PASS_URL
+              value: http://registry:5000
+            - name: DELETE_IMAGES
+              value: "true"
+            - name: REGISTRY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: registry-auth-secret
+                  key: username
+            - name: REGISTRY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: registry-auth-secret
+                  key: password
