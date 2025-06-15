@@ -26,5 +26,8 @@ jobs:
         run: |
           kubectl create namespace registry || echo "Namespace 'registry' already exists."
           kubectl label namespace registry app.kubernetes.io/managed-by=Helm --overwrite
+          kubectl annotate namespace registry \
+            meta.helm.sh/release-name=registry \
+            meta.helm.sh/release-namespace=registry --overwrite
           helm upgrade --install registry ./charts/registry \
             --namespace registry
