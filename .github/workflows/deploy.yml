@@ -25,5 +25,6 @@ jobs:
       - name: Deploy Helm Chart
         run: |
           kubectl create namespace registry || echo "Namespace 'registry' already exists."
+          kubectl label namespace registry app.kubernetes.io/managed-by=Helm --overwrite
           helm upgrade --install registry ./charts/registry \
             --namespace registry
