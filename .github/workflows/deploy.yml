@@ -23,4 +23,4 @@ jobs:
       - name: Deploy Helm Chart
         run: |
           helm upgrade --install registry ./charts/registry \
-            --namespace registry --create-namespace
+            --namespace registry
