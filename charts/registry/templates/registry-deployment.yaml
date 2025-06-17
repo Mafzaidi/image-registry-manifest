@@ -18,6 +18,11 @@ spec:
           image: registry:latest
           ports:
             - containerPort: 5000
+          volumeMounts:
+            - name: registry-storage
+              mountPath: /var/lib/registry
+            - name: auth-volume
+              mountPath: /auth
           env:
             - name: REGISTRY_AUTH
               value: "htpasswd"
@@ -25,14 +30,7 @@ spec:
               value: "Registry Realm"
             - name: REGISTRY_AUTH_HTPASSWD_PATH
               value: "/auth/htpasswd"
-            - name: REGISTRY_HTTP_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: registry-http-secret
-                  key: http-secret
           volumeMounts:
-            - name: registry-storage
-              mountPath: /var/lib/registry
             - name: auth-volume
               mountPath: /auth
       volumes:
@@ -41,3 +39,5 @@ spec:
         - name: auth-volume
           secret:
             secretName: registry-auth-secret
+
+        
